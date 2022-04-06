@@ -28,12 +28,20 @@ const Calendar = {
 	 *
 	 */
 	addEvent(event, callback) {
-		const timerId = setTimeout(
-			callback,
-			new Date(event.startTime).getTime() - Date.now()
-		);
-		const eventObj = { ...event, timerId };
-		this.events.push(eventObj);
+		try {
+			if (event && callback) {
+				const timerId = setTimeout(
+					callback,
+					new Date(event.startTime).getTime() - Date.now()
+				);
+				const eventObj = { ...event, timerId };
+				this.events.push(eventObj);
+			} else {
+				throw new Error('event and callback parameters are required');
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
 	},
 
 	/**
@@ -54,11 +62,19 @@ const Calendar = {
 	 *
 	 */
 	deleteEvent(event) {
-		const index = this.events.findIndex((el) => el.id === event.id);
-		if (index !== -1) {
-			this.events.splice(index, 1);
+		try {
+			if (event) {
+				const index = this.events.findIndex((el) => el.id === event.id);
+				if (index !== -1) {
+					this.events.splice(index, 1);
+				}
+				clearTimeout(event.timerId);
+			} else {
+				throw new Error('event parameter are required');
+			}
+		} catch (error) {
+			console.log(error.message);
 		}
-		clearTimeout(event.timerId);
 	},
 };
 
