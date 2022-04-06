@@ -1,12 +1,58 @@
-const currentDate = Date.now();
+/**
+ * @exports Calendar
+ */
 
-export const Calendar = {
+const Calendar = {
+	/**
+	 * Array of event objects
+	 * @member
+	 * @type {array}
+	 *
+	 */
 	events: [],
-	addEvent(event) {
-		const timerId = setTimeout(event.callback, event.startTime - currentDate);
+	/**
+	 * The method adds an event on a specific date and adds a callback function that will be called when the specified date in the event occurs
+	 * @method addEvent
+	 * @param {object} event
+	 * Object of event
+	 * @param {number} event.id
+	 * Id of event
+	 * @param {string} event.title
+	 * Title of event
+	 * @param {string} event.startTime
+	 * Date of the event in the format "2022-04-06T12:00:00"
+	 * @param {function} callback
+	 * Callback function that will be called when the specified date in the event occurs
+	 * @example
+	 * addEvent({id: 1, title: 'birthday',startTime: '2022-04-06T12:00:00',}, () => { console.log('Happy Birthday') })
+	 *
+	 */
+	addEvent(event, callback) {
+		const timerId = setTimeout(
+			callback,
+			new Date(event.startTime).getTime() - Date.now()
+		);
 		const eventObj = { ...event, timerId };
 		this.events.push(eventObj);
 	},
+
+	/**
+	 * The method deletes the event
+	 * @method deleteEvent
+	 * @param {object} event
+	 * Object of event in Array "events"
+	 * @param {number} event.id
+	 * Id of event
+	 * @param {string} event.title
+	 * Title of event
+	 * @param {string} event.startTime
+	 * Date of the event in the format "2022-04-06T12:00:00"
+	 * @param {number} event.timerId
+	 * Id of timeout
+	 * @example
+	 * addEvent({id: 1, title: 'birthday', startTime: '2022-04-06T12:00:00', timerId: 1})
+	 *
+	 */
 	deleteEvent(event) {
 		const index = this.events.findIndex((el) => el.id === event.id);
 		if (index !== -1) {
