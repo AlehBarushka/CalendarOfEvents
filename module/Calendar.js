@@ -29,7 +29,7 @@ const Calendar = {
 	 */
 	addEvent(event, callback) {
 		try {
-			if (event && callback) {
+			if (event?.id && event?.startTime && callback) {
 				const timerId = setTimeout(
 					callback,
 					new Date(event.startTime).getTime() - Date.now()
@@ -37,7 +37,9 @@ const Calendar = {
 				const eventObj = { ...event, timerId };
 				this.events.push(eventObj);
 			} else {
-				throw new Error('event and callback parameters are required');
+				throw new Error(
+					'event and callback parameters are required, and event must contain at least id and startTime'
+				);
 			}
 		} catch (error) {
 			console.log(error.message);
@@ -63,14 +65,16 @@ const Calendar = {
 	 */
 	deleteEvent(event) {
 		try {
-			if (event) {
+			if (event?.id && event?.timerId) {
 				const index = this.events.findIndex((el) => el.id === event.id);
 				if (index !== -1) {
 					this.events.splice(index, 1);
 				}
 				clearTimeout(event.timerId);
 			} else {
-				throw new Error('event parameter are required');
+				throw new Error(
+					'event parameter are required and must contain at least id and timeId'
+				);
 			}
 		} catch (error) {
 			console.log(error.message);
