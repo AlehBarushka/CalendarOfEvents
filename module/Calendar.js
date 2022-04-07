@@ -1,15 +1,25 @@
-/**
- * @exports Calendar
- */
+class Calendar {
+	_events = [];
 
-const Calendar = {
 	/**
-	 * Array of event objects
-	 * @member
-	 * @type {array}
+	 * The method return array with objects of events
+	 * @method getAllEvents
+	 * @returns {array}
+	 * Array with objects of events
+	 */
+	getAllEvents() {
+		return this._events;
+	}
+
+	/** this method adds a new event object to the array
+	 * @method setEvent
+	 * @param {object} event - object of event
 	 *
 	 */
-	events: [],
+	setEvent(event) {
+		this._events.push(event);
+	}
+
 	/**
 	 * The method adds an event on a specific date and adds a callback function that will be called when the specified date in the event occurs
 	 * @method addEvent
@@ -35,7 +45,7 @@ const Calendar = {
 					new Date(event.startTime).getTime() - Date.now()
 				);
 				const eventObj = { ...event, timerId };
-				this.events.push(eventObj);
+				this.setEvent(eventObj);
 			} else {
 				throw new Error(
 					'event and callback parameters are required, and event must contain at least id and startTime'
@@ -44,7 +54,7 @@ const Calendar = {
 		} catch (error) {
 			console.log(error.message);
 		}
-	},
+	}
 
 	/**
 	 * The method deletes the event
@@ -79,6 +89,8 @@ const Calendar = {
 		} catch (error) {
 			console.log(error.message);
 		}
-	},
-};
+	}
+}
+
+const calendar = new Calendar();
 
