@@ -1,4 +1,4 @@
-class Calendar {
+export class Calendar {
 	_events = [];
 
 	/**
@@ -54,7 +54,7 @@ class Calendar {
 	 * @returns {object}
 	 * Returns an object with fields date, time, id, timerId at least if event is valid
 	 */
-	_deleteEventValidator(event) {
+	_deleteUpdateEventValidator(event) {
 		if (event?.id && event?.timerId && event?.date && event?.time) {
 			return event;
 		} else {
@@ -148,7 +148,7 @@ class Calendar {
 	 */
 	deleteEvent(event) {
 		try {
-			const validatedEvent = this._deleteEventValidator(event);
+			const validatedEvent = this._deleteUpdateEventValidator(event);
 			const index = this.getAllEvents().findIndex(
 				(el) => el.id === validatedEvent.id
 			);
