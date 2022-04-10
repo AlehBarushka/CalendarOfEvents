@@ -2,17 +2,6 @@ export class Calendar {
 	_events = [];
 
 	/**
-	 * The method adds a new event object to the array
-	 * @private
-	 * @method _setEvent
-	 * @param {object} event - object of event
-	 *
-	 */
-	_setEvent(event) {
-		this._events.push(event);
-	}
-
-	/**
 	 * The method generates a random string
 	 * @private
 	 * @method _getId
@@ -37,25 +26,8 @@ export class Calendar {
 	 * @returns {object}
 	 * Returns an object with fields date and time at least if event is valid
 	 */
-	_addEventValidator(event) {
+	_eventValidator(event) {
 		if (event?.date && event?.time) {
-			return event;
-		} else {
-			throw new Error('Invalid Event');
-		}
-	}
-
-	/**
-	 * The method checks the validity of the event object to use it in the deleteEvent method
-	 * @private
-	 * @method _deleteEventValidator
-	 * @param {object} event
-	 * Object of event
-	 * @returns {object}
-	 * Returns an object with fields date, time, id, timerId at least if event is valid
-	 */
-	_deleteUpdateEventValidator(event) {
-		if (event?.id && event?.timerId && event?.date && event?.time) {
 			return event;
 		} else {
 			throw new Error('Invalid Event');
@@ -67,16 +39,15 @@ export class Calendar {
 	 * @private
 	 * @method _deleteEventValidator
 	 * @param {object} event
-	 * Valid object of event
+	 * Object of event
 	 * @returns {string}
 	 * Returns string of event date in format: '2022-04-06T18:24:00'
 	 */
-	_dateValidator(event) {
-		const eventDate = event.date + 'T' + event.time;
+	_dateValidator(date, time) {
+		const eventDate = date + 'T' + time;
 		if (isNaN(Date.parse(eventDate))) {
 			throw new Error('Incorrect date format');
 		}
-
 		if (Date.parse(eventDate) < Date.now()) {
 			throw new Error('The event can not be in the past');
 		}
@@ -84,12 +55,10 @@ export class Calendar {
 	}
 
 	/**
-	 * The method return array with objects of events
-	 * @method getAllEvents
-	 * @returns {array}
-	 * Array with objects of events
+	 * The method returns array of events objects
+	 * @method getEvents
 	 */
-	getAllEvents() {
+	getEvents() {
 		return this._events;
 	}
 
@@ -115,14 +84,20 @@ export class Calendar {
 			if (!callback) {
 				throw new Error('Callback parameter is required');
 			}
-			const validatedEvent = this._addEventValidator(event);
-			const validatedDate = this._dateValidator(validatedEvent);
+			const validatedEvent = this._eventValidator(event);
+			const validatedDate = this._dateValidator(event.date, event.time);
 			const timerId = setTimeout(
 				callback,
 				new Date(validatedDate).getTime() - Date.now()
 			);
-			const eventObj = { id: this._getId(), ...validatedEvent, timerId };
-			this._setEvent(eventObj);
+			const eventObj = {
+				id: this._getId(),
+				...validatedEvent,
+				timerId,
+				callback,
+			};
+			this._events.push(eventObj);
+			return 'Added successfully!';
 		} catch (error) {
 			console.log(error.message);
 		}
@@ -131,33 +106,117 @@ export class Calendar {
 	/**
 	 * The method deletes the event
 	 * @method deleteEvent
-	 * @param {object} event
-	 * Object of event in Array "events"
-	 * @param {string} event.id
-	 * Id of event
-	 * @param {string} event.title
-	 * Title of event
-	 * @param {string} event.time
-	 * Time of the event in the format "12:00:00"
-	 * @param {string} event.date
-	 * Date of the event in the format "2022-04-06"
-	 * @param {number} event.timerId
-	 * Id of timeout
+	 * @param {string} id
+	 * Id of an existing event
 	 * @example
-	 * addEvent({ id: 'f9ca-1baa-c970-35b4', title: 'birthday', date: '2022-04-06', time: '18:24:00', timerId: 25 })
+	 * deleteEvent('f9ca-1baa-c970-35b4')
 	 */
-	deleteEvent(event) {
+	deleteEvent(id) {
 		try {
-			const validatedEvent = this._deleteUpdateEventValidator(event);
-			const index = this.getAllEvents().findIndex(
-				(el) => el.id === validatedEvent.id
-			);
+			const events = this._events;
+			const index = events.findIndex((el) => el.id === id);
 			if (index !== -1) {
-				this.events.splice(index, 1);
+				clearTimeout(events[index].timerId);
+				events.splice(index, 1);
 			} else {
 				throw new Error('Event not found');
 			}
-			clearTimeout(validatedEvent.timerId);
+			return 'Deleted successfully!';
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	/**
+	 * The method deletes the event
+	 * @method updateEvent
+	 * @param {string} id
+	 * Id of an existing event
+	 * @param {object} nextEvent
+	 * Object of the new event
+	 * @param {string} [event.title
+	 * Title of the new event
+	 * @param {string} event.time
+	 * Time of the new event in the format "12:00:00"
+	 * @param {string} event.date
+	 * Date of the new event in the format "2022-04-06"
+	 * @param {function} [nextCallback]
+	 * Callback function that will be called when the specified date in the event occurs
+	 * @example
+	 * updateEvent('f9ca-1baa-c970-35b4', { title: 'birthday', date: '2022-04-06', time: '18:24:00'}, () => { console.log('Happy Birthday') })
+	 */
+	updateEvent(id, nextEvent, nextCallback) {
+		try {
+			const validatedEvent = this._eventValidator(nextEvent);
+			const validatedDate = this._dateValidator(nextEvent.date, nextEvent.time);
+			const events = this._events;
+			const index = events.findIndex((el) => el.id === id);
+			if (index !== -1) {
+				let callback;
+				if (!nextCallback) {
+					callback = events[index].callback;
+				} else {
+					callback = nextCallback;
+				}
+				const date = events[index].date + 'T' + events[index].time;
+				if (Date.parse(validatedDate) !== Date.parse(date)) {
+					clearTimeout(events[index].timerId);
+					const timerId = setTimeout(
+						callback,
+						new Date(validatedDate).getTime() - Date.now()
+					);
+					console.log(callback);
+					events[index] = {
+						...events[index],
+						...validatedEvent,
+						timerId,
+						callback,
+					};
+				}
+				events[index] = {
+					...events[index],
+					...validatedEvent,
+					callback,
+				};
+				return 'Updated successfully!';
+			} else {
+				throw new Error('Event not found!');
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	/**
+	 * The method returns array with events objects in the specified date range
+	 * @method getEventsForPeriod
+	 * @param {string} dateRange1
+	 * @param {string} dateRange2
+	 * @example
+	 * getEventsForPeriod('2022-10-10', '2022-10-20')
+	 */
+	getEventsForPeriod(dateRange1, dateRange2) {
+		try {
+			if (!dateRange1 && !dateRange2) {
+				throw new Error('Date range is required!');
+			}
+			if (isNaN(Date.parse(dateRange1)) && isNaN(Date.parse(dateRange2))) {
+				throw new Error('Incorrect date format!');
+			}
+			const parsedDateRange1 = Date.parse(dateRange1);
+			const parsedDateRange2 = Date.parse(dateRange2);
+			const events = this._events.filter((event) => {
+				return (
+					(Date.parse(event.date) >= parsedDateRange1 &&
+						Date.parse(event.date) <= parsedDateRange2) ||
+					(Date.parse(event.date) >= parsedDateRange2 &&
+						Date.parse(event.date) <= parsedDateRange1)
+				);
+			});
+			if (events) {
+				return events;
+			}
+			return 'There are no events for the specified period!';
 		} catch (error) {
 			console.log(error.message);
 		}
@@ -165,19 +224,3 @@ export class Calendar {
 }
 
 const calendar = new Calendar();
-
-const eventSampleForAdd = {
-	title: 'Birthday',
-	date: '2022-04-07',
-	time: '17:46:00',
-};
-const eventSampleForDelete = {
-	title: 'Birthday',
-	date: '2022-04-07',
-	time: '17:46:00',
-	id: 'asfdf',
-	timerId: 1,
-};
-
-const callbackSample = () => console.log('Happy Birthday');
-
