@@ -180,8 +180,43 @@ class Calendar {
 				};
 				return 'Updated successfully!';
 			} else {
-				throw new Error('Event not found');
+				throw new Error('Event not found!');
 			}
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	/**
+	 * The method returns array with events objects in the specified date range
+	 * @method getEventsForPeriod
+	 * @param {string} dateRange1
+	 * @param {string} dateRange2
+	 * @example
+	 * getEventsForPeriod('2022-10-10', '2022-10-20')
+	 */
+	getEventsForPeriod(dateRange1, dateRange2) {
+		try {
+			if (!dateRange1 && !dateRange2) {
+				throw new Error('Date range is required!');
+			}
+			if (isNaN(Date.parse(dateRange1)) && isNaN(Date.parse(dateRange2))) {
+				throw new Error('Incorrect date format!');
+			}
+			const parsedDateRange1 = Date.parse(dateRange1);
+			const parsedDateRange2 = Date.parse(dateRange2);
+			const events = this._events.filter((event) => {
+				return (
+					(Date.parse(event.date) >= parsedDateRange1 &&
+						Date.parse(event.date) <= parsedDateRange2) ||
+					(Date.parse(event.date) >= parsedDateRange2 &&
+						Date.parse(event.date) <= parsedDateRange1)
+				);
+			});
+			if (events) {
+				return events;
+			}
+			return 'There are no events for the specified period!';
 		} catch (error) {
 			console.log(error.message);
 		}
