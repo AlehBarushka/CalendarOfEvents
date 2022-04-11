@@ -213,8 +213,36 @@ class Calendar {
 						Date.parse(event.date) <= parsedDateRange1)
 				);
 			});
-			if (events) {
+			if (events.length) {
 				return events;
+			}
+			return 'There are no events for the specified period!';
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	/**
+	 * The method return object with event in the specified date
+	 * @method getEventForDay
+	 * @param {string} date
+	 * @example
+	 * getEventForDay('2022-10-10')
+	 */
+	getEventForDay(date) {
+		try {
+			if (!date) {
+				throw new Error('Date range is required!');
+			}
+			if (isNaN(Date.parse(date))) {
+				throw new Error('Incorrect date format!');
+			}
+			const parsedDate = Date.parse(date);
+			const events = this._events.filter((event) => {
+				return Date.parse(event.date) === parsedDate;
+			});
+			if (events.length) {
+				return events[0];
 			}
 			return 'There are no events for the specified period!';
 		} catch (error) {
@@ -224,4 +252,3 @@ class Calendar {
 }
 
 const calendar = new Calendar();
-
