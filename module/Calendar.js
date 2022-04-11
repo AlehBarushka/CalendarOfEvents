@@ -215,8 +215,9 @@ class Calendar {
 			});
 			if (events.length) {
 				return events;
+			} else {
+				return 'There are no events for the specified period!';
 			}
-			return 'There are no events for the specified period!';
 		} catch (error) {
 			console.log(error.message);
 		}
@@ -232,7 +233,7 @@ class Calendar {
 	getEventForDay(date) {
 		try {
 			if (!date) {
-				throw new Error('Date range is required!');
+				throw new Error('Date is required!');
 			}
 			if (isNaN(Date.parse(date))) {
 				throw new Error('Incorrect date format!');
@@ -243,8 +244,64 @@ class Calendar {
 			});
 			if (events.length) {
 				return events[0];
+			} else {
+				return 'There are no events for the specified period!';
 			}
-			return 'There are no events for the specified period!';
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	/**
+	 * The method return array with events objects in the specified month
+	 * @method getEventForMonth
+	 * @param {string|number} month number of month
+	 * @param {string|number} [year] number of year
+	 * @example
+	 * getEventForDay('04', '2022')
+	 * getEventForDay(4, 2022)
+	 * getEventForDay(4)
+	 */
+	getEventForMonth(month, year = new Date().getFullYear()) {
+		try {
+			const dateRange1 = year + '-' + month;
+			if (!month) {
+				throw new Error('Month is required!');
+			}
+			if (isNaN(Date.parse(dateRange1))) {
+				throw new Error('Incorrect date format!');
+			}
+			const nextMonth = (month) => {
+				if (parseInt(month) + 1 < 10) {
+					return '0' + (parseInt(month) + 1);
+				}
+				if (parseInt(month) === 12) {
+					return '01';
+				} else {
+					return parseInt(month) + 1;
+				}
+			};
+			const nextYear = (year = new Date().getFullYear()) => {
+				if (nextMonth(month) === '01') {
+					return (parseInt(year) + 1).toString();
+				} else {
+					return year.toString();
+				}
+			};
+			const dateRange2 = nextYear(year) + '-' + nextMonth(month);
+			const parsedDateRange1 = Date.parse(dateRange1);
+			const parsedDateRange2 = Date.parse(dateRange2);
+			const events = this._events.filter((event) => {
+				return (
+					Date.parse(event.date) >= parsedDateRange1 &&
+					Date.parse(event.date) < parsedDateRange2
+				);
+			});
+			if (events.length) {
+				return events;
+			} else {
+				return 'There are no events for the specified period!';
+			}
 		} catch (error) {
 			console.log(error.message);
 		}
