@@ -81,6 +81,9 @@ export class Calendar {
 	 */
 	addEvent(event, callback) {
 		try {
+			if (!event) {
+				throw new Error('Event parameter is required');
+			}
 			if (!callback) {
 				throw new Error('Callback parameter is required');
 			}
@@ -99,7 +102,7 @@ export class Calendar {
 			this._events.push(eventObj);
 			return 'Added successfully!';
 		} catch (error) {
-			console.log(error.message);
+			return error;
 		}
 	}
 
