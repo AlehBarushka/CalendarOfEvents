@@ -116,17 +116,20 @@ export class Calendar {
 	 */
 	deleteEvent(id) {
 		try {
+			if (!id) {
+				throw new Error('Id is required');
+			}
 			const events = this._events;
 			const index = events.findIndex((el) => el.id === id);
 			if (index !== -1) {
 				clearTimeout(events[index].timerId);
 				events.splice(index, 1);
 			} else {
-				throw new Error('Event not found');
+				return 'Event not found';
 			}
 			return 'Deleted successfully!';
 		} catch (error) {
-			console.log(error.message);
+			return error;
 		}
 	}
 
