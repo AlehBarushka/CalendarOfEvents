@@ -29,8 +29,9 @@ describe('Calendar: deleteEvent', () => {
 		expect(_.deleteEvent(nonexistId)).toBe('Event not found');
 	});
 
-	test('should return a string with a successful status', () => {
+	test('should return a string with a successful status and the events array should be empty', () => {
 		expect(_.deleteEvent(getId())).toBe('Deleted successfully!');
+		expect(_.getEvents()).toEqual([]);
 	});
 });
 
