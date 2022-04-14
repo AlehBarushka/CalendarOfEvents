@@ -90,12 +90,10 @@ class Calendar {
 			if (!callback) {
 				throw new Error('Callback parameter is required');
 			}
+			const delay = new Date(validatedDate).getTime() - Date.now();
 			const validatedEvent = this._eventValidator(event);
 			const validatedDate = this._dateValidator(event.date, event.time);
-			const timerId = setTimeout(
-				callback,
-				new Date(validatedDate).getTime() - Date.now()
-			);
+			const timerId = setTimeout(callback, delay);
 			const eventObj = {
 				id: this._generateUniqId(),
 				...validatedEvent,
@@ -156,6 +154,7 @@ class Calendar {
 			const validatedEvent = this._eventValidator(nextEvent);
 			const validatedDate = this._dateValidator(nextEvent.date, nextEvent.time);
 			const events = this._events;
+			const delay = new Date(validatedDate).getTime() - Date.now();
 			const index = events.findIndex((el) => el.id === id);
 			if (index !== -1) {
 				let callback;
@@ -167,10 +166,7 @@ class Calendar {
 				const date = events[index].date + 'T' + events[index].time;
 				if (Date.parse(validatedDate) !== Date.parse(date)) {
 					clearTimeout(events[index].timerId);
-					const timerId = setTimeout(
-						callback,
-						new Date(validatedDate).getTime() - Date.now()
-					);
+					const timerId = setTimeout(callback, delay);
 					console.log(callback);
 					events[index] = {
 						...events[index],
