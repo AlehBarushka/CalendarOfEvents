@@ -81,9 +81,6 @@ export class Calendar {
 	 */
 	addEvent(event, callback) {
 		try {
-			if (!event) {
-				throw new Error('Event parameter is required');
-			}
 			if (!callback) {
 				throw new Error('Callback parameter is required');
 			}
@@ -153,6 +150,12 @@ export class Calendar {
 	 */
 	updateEvent(id, nextEvent, nextCallback) {
 		try {
+			if (!id) {
+				throw new Error('Id is required');
+			}
+			if (!nextEvent) {
+				throw new Error('NextEvent parameter is required');
+			}
 			const validatedEvent = this._eventValidator(nextEvent);
 			const validatedDate = this._dateValidator(nextEvent.date, nextEvent.time);
 			const events = this._events;
@@ -171,7 +174,6 @@ export class Calendar {
 						callback,
 						new Date(validatedDate).getTime() - Date.now()
 					);
-					console.log(callback);
 					events[index] = {
 						...events[index],
 						...validatedEvent,
@@ -186,10 +188,10 @@ export class Calendar {
 				};
 				return 'Updated successfully!';
 			} else {
-				throw new Error('Event not found!');
+				return 'Event not found';
 			}
 		} catch (error) {
-			console.log(error.message);
+			return error;
 		}
 	}
 
