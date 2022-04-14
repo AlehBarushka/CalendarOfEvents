@@ -33,7 +33,7 @@ class Calendar {
 	 * Returns an object with fields date and time at least if event is valid
 	 */
 	_eventValidator(event) {
-		if (event?.date && event?.time) {
+		if (event?.date && event?.time && event?.title) {
 			return event;
 		} else {
 			throw new Error('Invalid Event');
@@ -90,20 +90,22 @@ class Calendar {
 			if (!callback) {
 				throw new Error('Callback parameter is required');
 			}
+			const { title, date, time } = this._eventValidator(event);
+			const validatedDate = this._dateValidator(date, time);
 			const delay = new Date(validatedDate).getTime() - Date.now();
-			const validatedEvent = this._eventValidator(event);
-			const validatedDate = this._dateValidator(event.date, event.time);
-			const timerId = setTimeout(callback, delay);
+			const timerId = setTimeout(() => callback, delay);
 			const eventObj = {
 				id: this._generateUniqId(),
-				...validatedEvent,
+				title,
+				date,
+				time,
 				timerId,
 				callback,
 			};
 			this._events.push(eventObj);
 			return 'Added successfully!';
 		} catch (error) {
-			console.log(error.message);
+			return error;
 		}
 	}
 
@@ -138,7 +140,7 @@ class Calendar {
 	 * Id of an existing event
 	 * @param {object} nextEvent
 	 * Object of the new event
-	 * @param {string} [event.title
+	 * @param {string} event.title
 	 * Title of the new event
 	 * @param {string} event.time
 	 * Time of the new event in the format "12:00:00"
@@ -151,8 +153,8 @@ class Calendar {
 	 */
 	updateEvent(id, nextEvent, nextCallback) {
 		try {
-			const validatedEvent = this._eventValidator(nextEvent);
-			const validatedDate = this._dateValidator(nextEvent.date, nextEvent.time);
+			const { title, date, time } = this._eventValidator(nextEvent);
+			const validatedDate = this._dateValidator(date, time);
 			const events = this._events;
 			const delay = new Date(validatedDate).getTime() - Date.now();
 			const index = events.findIndex((el) => el.id === id);
@@ -163,29 +165,32 @@ class Calendar {
 				} else {
 					callback = nextCallback;
 				}
-				const date = events[index].date + 'T' + events[index].time;
-				if (Date.parse(validatedDate) !== Date.parse(date)) {
+				const prevDate = events[index].date + 'T' + events[index].time;
+				if (Date.parse(validatedDate) !== Date.parse(prevDate)) {
 					clearTimeout(events[index].timerId);
-					const timerId = setTimeout(callback, delay);
-					console.log(callback);
+					const timerId = setTimeout(() => callback, delay);
 					events[index] = {
 						...events[index],
-						...validatedEvent,
+						title,
+						date,
+						time,
 						timerId,
 						callback,
 					};
+				} else {
+					events[index] = {
+						...events[index],
+						title,
+						callback,
+					};
 				}
-				events[index] = {
-					...events[index],
-					...validatedEvent,
-					callback,
-				};
+
 				return 'Updated successfully!';
 			} else {
-				throw new Error('Event not found!');
+				return 'Event not found!';
 			}
 		} catch (error) {
-			console.log(error.message);
+			error;
 		}
 	}
 
