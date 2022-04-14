@@ -26,7 +26,7 @@ class Calendar {
   /**
    * The method checks the validity of the event object to use it in the addEvent method
    * @private
-   * @method _addEventValidator
+   * @method _eventValidator
    * @param {object} event
    * Object of event
    * @returns {object}
@@ -51,10 +51,11 @@ class Calendar {
    */
   _dateValidator(date, time) {
     const eventDate = date + 'T' + time;
-    if (isNaN(Date.parse(eventDate))) {
+    const parsedDate = Date.parse(eventDate);
+    if (isNaN(parsedDate)) {
       throw new Error('Incorrect date format');
     }
-    if (Date.parse(eventDate) < Date.now()) {
+    if (parsedDate < Date.now()) {
       throw new Error('The event can not be in the past');
     }
     return eventDate;
@@ -129,7 +130,7 @@ class Calendar {
       }
       return 'Deleted successfully!';
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   }
 
@@ -187,10 +188,10 @@ class Calendar {
 
         return 'Updated successfully!';
       } else {
-        return 'Event not found!';
+        throw new Error('Event not found!');
       }
     } catch (error) {
-      error;
+      return error;
     }
   }
 
@@ -213,11 +214,10 @@ class Calendar {
       const parsedDateRange1 = Date.parse(dateRange1);
       const parsedDateRange2 = Date.parse(dateRange2);
       const events = this._events.filter((event) => {
+        const parsedDate = Date.parse(event.date);
         return (
-          (Date.parse(event.date) >= parsedDateRange1 &&
-            Date.parse(event.date) <= parsedDateRange2) ||
-          (Date.parse(event.date) >= parsedDateRange2 &&
-            Date.parse(event.date) <= parsedDateRange1)
+          (parsedDate >= parsedDateRange1 && parsedDate <= parsedDateRange2) ||
+          (parsedDate >= parsedDateRange2 && parsedDate <= parsedDateRange1)
         );
       });
       if (events.length) {
@@ -226,7 +226,7 @@ class Calendar {
         return 'There are no events for the specified period!';
       }
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   }
 
@@ -242,20 +242,20 @@ class Calendar {
       if (!date) {
         throw new Error('Date is required!');
       }
-      if (isNaN(Date.parse(date))) {
+      const parsedDate = Date.parse(date);
+      if (isNaN(parsedDate)) {
         throw new Error('Incorrect date format!');
       }
-      const parsedDate = Date.parse(date);
       const events = this._events.filter((event) => {
         return Date.parse(event.date) === parsedDate;
       });
       if (events.length) {
-        return events[0];
+        return events;
       } else {
         return 'There are no events for the specified period!';
       }
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   }
 
@@ -279,13 +279,14 @@ class Calendar {
         throw new Error('Incorrect date format!');
       }
       const nextMonth = (month) => {
-        if (parseInt(month) + 1 < 10) {
-          return '0' + (parseInt(month) + 1);
+        const nextMonthNumber = parseInt(month) + 1;
+        if (nextMonthNumber < 10) {
+          return '0' + nextMonthNumber;
         }
-        if (parseInt(month) === 12) {
+        if (nextMonthNumber === 12) {
           return '01';
         } else {
-          return parseInt(month) + 1;
+          return nextMonthNumber + 1;
         }
       };
       const nextYear = (year = new Date().getFullYear()) => {
@@ -299,10 +300,8 @@ class Calendar {
       const parsedDateRange1 = Date.parse(dateRange1);
       const parsedDateRange2 = Date.parse(dateRange2);
       const events = this._events.filter((event) => {
-        return (
-          Date.parse(event.date) >= parsedDateRange1 &&
-          Date.parse(event.date) < parsedDateRange2
-        );
+        const parsedDate = Date.parse(event.date);
+        return parsedDate >= parsedDateRange1 && parsedDate < parsedDateRange2;
       });
       if (events.length) {
         return events;
@@ -310,7 +309,7 @@ class Calendar {
         return 'There are no events for the specified period!';
       }
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   }
 }
