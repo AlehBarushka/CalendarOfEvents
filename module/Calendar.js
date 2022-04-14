@@ -2,19 +2,25 @@ class Calendar {
 	_events = [];
 
 	/**
-	 * The method generates a random string
+	 * The method generates and returns a uniqId
 	 * @private
-	 * @method _getId
-	 * @returns {string}
-	 * random string
+	 * @method _generateUniqId
 	 */
-	_getId() {
-		const s4 = () => {
+	_generateUniqId() {
+		const generateRandomString = () => {
 			return Math.floor((1 + Math.random()) * 0x10000)
 				.toString(16)
 				.substring(1);
 		};
-		return s4() + '-' + s4() + '-' + s4() + '-' + s4();
+		return (
+			generateRandomString() +
+			'-' +
+			generateRandomString() +
+			'-' +
+			generateRandomString() +
+			'-' +
+			generateRandomString()
+		);
 	}
 
 	/**
@@ -91,7 +97,7 @@ class Calendar {
 				new Date(validatedDate).getTime() - Date.now()
 			);
 			const eventObj = {
-				id: this._getId(),
+				id: this._generateUniqId(),
 				...validatedEvent,
 				timerId,
 				callback,
