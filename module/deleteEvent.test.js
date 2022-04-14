@@ -12,17 +12,13 @@ const validEventSample = {
 const callbackSample = () => console.log('Happy Birthday');
 const nonexistId = 'id';
 
+beforeAll(() => {
+	_.addEvent(validEventSample, callbackSample);
+});
+
 describe('Calendar: deleteEvent', () => {
-	const getId = () => {
-		_.addEvent(validEventSample, callbackSample);
-		return _.getEvents()[0].id;
-	};
 	test('should throw an error if called without an arg', () => {
-		try {
-			_.deleteEvent();
-		} catch (error) {
-			expect(error.message).toBe('Id is required');
-		}
+		expect(_.deleteEvent()).toEqual(new Error('Id is required'));
 	});
 
 	test('should return a string "Event not found"', () => {
@@ -30,7 +26,10 @@ describe('Calendar: deleteEvent', () => {
 	});
 
 	test('should return a string with a successful status and the events array should be empty', () => {
-		expect(_.deleteEvent(getId())).toBe('Deleted successfully!');
+		const getValidId = () => {
+			return _.getEvents()[0].id;
+		};
+		expect(_.deleteEvent(getValidId())).toBe('Deleted successfully!');
 		expect(_.getEvents()).toEqual([]);
 	});
 });
