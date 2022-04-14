@@ -23,8 +23,8 @@ const validEventSampleWithInvalidDate = {
 
 const validEventSampleWithElapsedDate = {
 	title: 'Birthday',
-	date: '20220607',
-	time: '17:4600',
+	date: '2020-10-10',
+	time: '17:46:00',
 };
 const callbackSample = () => console.log('Happy Birthday');
 
@@ -35,44 +35,28 @@ describe('Calendar: addEvent', () => {
 		expect(_.addEvent(validEventSample)).toBeDefined();
 	});
 
-	test('should throw an error if called without event arg', () => {
-		try {
-			_.addEvent(_, callbackSample);
-		} catch (error) {
-			expect(error.message).toEqual('Event parameter is required');
-		}
-	});
-
 	test('should throw an error if called without callback arg', () => {
-		try {
-			_.addEvent(validEventSample);
-		} catch (error) {
-			expect(error.message).toEqual('Callback parameter is required');
-		}
+		expect(_.addEvent(validEventSample)).toEqual(
+			new Error('Callback parameter is required')
+		);
 	});
 
 	test('should throw an error if called with invalid event arg', () => {
-		try {
-			_.addEvent(invalidEventSample, callbackSample);
-		} catch (error) {
-			expect(error.message).toEqual('Invalid Event');
-		}
+		expect(_.addEvent(invalidEventSample, callbackSample)).toEqual(
+			new Error('Invalid Event')
+		);
 	});
 
 	test('should throw an error if called with invalid date format', () => {
-		try {
-			_.addEvent(validEventSampleWithInvalidDate, callbackSample);
-		} catch (error) {
-			expect(error.message).toEqual('Incorrect date format');
-		}
+		expect(_.addEvent(validEventSampleWithInvalidDate, callbackSample)).toEqual(
+			new Error('Incorrect date format')
+		);
 	});
 
 	test('should throw an error if called with an elapsed date', () => {
-		try {
-			_.addEvent(validEventSampleWithElapsedDate, callbackSample);
-		} catch (error) {
-			expect(error.message).toEqual('The event can not be in the past');
-		}
+		expect(_.addEvent(validEventSampleWithElapsedDate, callbackSample)).toEqual(
+			new Error('The event can not be in the past')
+		);
 	});
 
 	test('should return a string with the status of successful execution, and aray of events contain with the passed event object', () => {
