@@ -16,8 +16,5 @@
 	"bugs": {
 		"url": "https://github.com/AlehBarushka/CalendarOfEvents/issues"
 	},
-	"homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme",
-	"devDependencies": {
-		"jsdoc": "^3.6.10"
-	}
+	"homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme"
 }
