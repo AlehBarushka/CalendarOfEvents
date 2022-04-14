@@ -20,7 +20,7 @@ describe('Calendar: getEvents', () => {
 		expect(_.getEvents()).toBeDefined();
 	});
 
-	test('should has length', () => {
+	test('should has a length of one', () => {
 		expect(_.getEvents()).toHaveLength(1);
 	});
 
@@ -28,6 +28,11 @@ describe('Calendar: getEvents', () => {
 		expect(_.getEvents()).toEqual(
 			expect.arrayContaining([expect.objectContaining(validEventSample)])
 		);
+	});
+
+	test('should has a length of two', () => {
+		_.addEvent(validEventSample, callbackSample);
+		expect(_.getEvents()).toHaveLength(2);
 	});
 });
 
