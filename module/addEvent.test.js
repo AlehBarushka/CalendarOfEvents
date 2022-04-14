@@ -75,9 +75,12 @@ describe('Calendar: addEvent', () => {
 		}
 	});
 
-	test('should return a string with a successful status', () => {
+	test('should return a string with the status of successful execution, and events contain an array with the passed event object', () => {
 		expect(_.addEvent(validEventSample, callbackSample)).toBe(
 			'Added successfully!'
+		);
+		expect(_.getEvents()).toEqual(
+			expect.arrayContaining([expect.objectContaining(validEventSample)])
 		);
 	});
 });
