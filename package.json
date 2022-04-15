@@ -19,7 +19,6 @@
 	"homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme",
 	"devDependencies": {
 		"@babel/plugin-transform-modules-commonjs": "^7.17.9",
-		"jest": "^27.5.1",
-		"jsdoc": "^3.6.10"
+		"jest": "^27.5.1"		
 	}
 }
