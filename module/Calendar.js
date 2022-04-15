@@ -88,7 +88,7 @@ class Calendar {
       const { title, date, time } = this._eventValidator(event);
       const validatedDate = this._dateValidator(date, time);
       const delay = new Date(validatedDate).getTime() - Date.now();
-      const timerId = setTimeout(() => callback, delay);
+      const timerId = setTimeout(callback, delay);
 
       const eventObj = {
         id: this._generateUniqId(),
@@ -157,7 +157,7 @@ class Calendar {
 
         if (Date.parse(validatedDate) !== Date.parse(prevDate)) {
           clearTimeout(events[index].timerId);
-          const timerId = setTimeout(() => callback, delay);
+          const timerId = setTimeout(callback, delay);
           events[index] = {
             ...events[index],
             title,
@@ -196,15 +196,12 @@ class Calendar {
         throw new Error('Date range is required!');
       }
 
-      if (
-        Number.isNaN(Date.parse(dateRange1)) &&
-        Number.isNaN(Date.parse(dateRange2))
-      ) {
-        throw new Error('Incorrect date format!');
-      }
-
       const parsedDateRange1 = Date.parse(dateRange1);
       const parsedDateRange2 = Date.parse(dateRange2);
+
+      if (Number.isNaN(parsedDateRange1) && Number.isNaN(parsedDateRange2)) {
+        throw new Error('Incorrect date format!');
+      }
 
       const events = this._events.filter((event) => {
         const parsedDate = Date.parse(event.date);
