@@ -2,7 +2,7 @@
  * @typedef {object} event
  * @property {string} event.date - date in format '2022-04-06'.
  * @property {string} event.time - time in format '12:00:00'.
- * @property {number} event.title - title of event.
+ * @property {string} event.title - title of event.
  */
 
 class Calendar {
