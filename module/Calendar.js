@@ -4,7 +4,6 @@ class Calendar {
   /**
    * The method generates and returns a uniqId
    * @private
-   * @method _generateUniqId
    */
   _generateUniqId() {
     const generateRandomString = () => {
@@ -26,7 +25,6 @@ class Calendar {
   /**
    * The method checks the validity of the event object to use it in the addEvent method
    * @private
-   * @method _eventValidator
    * @param {object} event
    * Object of event
    * @returns {object}
@@ -43,7 +41,6 @@ class Calendar {
   /**
    * The method checks the validity of the event date
    * @private
-   * @method _deleteEventValidator
    * @param {object} event
    * Object of event
    * @returns {string}
@@ -63,7 +60,6 @@ class Calendar {
 
   /**
    * The method returns array of events objects
-   * @method getEvents
    */
   getEvents() {
     return this._events;
@@ -71,7 +67,6 @@ class Calendar {
 
   /**
    * The method adds an event on a specific date and adds a callback function that will be called when the specified date in the event occurs
-   * @method addEvent
    * @param {object} event
    * Object of event
    * @param {string} event.title
@@ -112,7 +107,6 @@ class Calendar {
 
   /**
    * The method deletes the event
-   * @method deleteEvent
    * @param {string} id
    * Id of an existing event
    * @example
@@ -136,7 +130,6 @@ class Calendar {
 
   /**
    * The method deletes the event
-   * @method updateEvent
    * @param {string} id
    * Id of an existing event
    * @param {object} nextEvent
@@ -197,7 +190,6 @@ class Calendar {
 
   /**
    * The method returns array with events objects in the specified date range
-   * @method getEventsForPeriod
    * @param {string} dateRange1
    * @param {string} dateRange2
    * @example
@@ -232,7 +224,6 @@ class Calendar {
 
   /**
    * The method return object with event in the specified date
-   * @method getEventForDay
    * @param {string} date
    * @example
    * getEventForDay('2022-10-10')
@@ -261,7 +252,6 @@ class Calendar {
 
   /**
    * The method return array with events objects in the specified month
-   * @method getEventForMonth
    * @param {string|number} month number of month
    * @param {string|number} [year] number of year
    * @example
