@@ -5,7 +5,7 @@
  * @property {string} event.title - title of event.
  */
 
-class Calendar {
+export class Calendar {
   _events = [];
 
   /**
@@ -115,6 +115,9 @@ class Calendar {
    */
   deleteEvent(id) {
     try {
+      if (!id) {
+        throw new Error('Id is required');
+      }
       const events = this._events;
       const index = events.findIndex((el) => el.id === id);
 
@@ -141,6 +144,14 @@ class Calendar {
    */
   updateEvent(id, nextEvent, nextCallback) {
     try {
+      if (!id) {
+        throw new Error('Id is required');
+      }
+
+      if (!nextEvent) {
+        throw new Error('NextEvent parameter is required');
+      }
+
       const { title, date, time } = this._eventValidator(nextEvent);
       const validatedDate = this._dateValidator(date, time);
       const events = this._events;
@@ -176,7 +187,7 @@ class Calendar {
 
         return 'Updated successfully!';
       } else {
-        throw new Error('Event not found!');
+        throw new Error('Event not found');
       }
     } catch (error) {
       return error;
