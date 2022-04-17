@@ -204,14 +204,14 @@ export class Calendar {
   getEventsForPeriod(dateRange1, dateRange2) {
     try {
       if (!dateRange1 && !dateRange2) {
-        throw new Error('Date range is required!');
+        throw new Error('Date range is required');
       }
 
       const parsedDateRange1 = Date.parse(dateRange1);
       const parsedDateRange2 = Date.parse(dateRange2);
 
       if (Number.isNaN(parsedDateRange1) && Number.isNaN(parsedDateRange2)) {
-        throw new Error('Incorrect date format!');
+        throw new Error('Incorrect date format');
       }
 
       const events = this._events.filter((event) => {
@@ -242,13 +242,13 @@ export class Calendar {
   getEventForDay(date) {
     try {
       if (!date) {
-        throw new Error('Date is required!');
+        throw new Error('Date is required');
       }
 
       const parsedDate = Date.parse(date);
 
       if (Number.isNaN(parsedDate)) {
-        throw new Error('Incorrect date format!');
+        throw new Error('Incorrect date format');
       }
 
       const events = this._events.filter((event) => {
@@ -280,11 +280,11 @@ export class Calendar {
       const dateRange1 = year + '-' + month;
 
       if (!month) {
-        throw new Error('Month is required!');
+        throw new Error('Month is required');
       }
 
       if (Number.isNaN(Date.parse(dateRange1))) {
-        throw new Error('Incorrect date format!');
+        throw new Error('Incorrect date format');
       }
 
       const nextMonth = (month) => {
