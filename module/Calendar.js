@@ -1,3 +1,5 @@
+import { generateUniqId } from '../utils/generateUniqId.js';
+
 /**
  * @typedef {object} event
  * @property {string} event.date - date in format '2022-04-06'.
@@ -7,28 +9,6 @@
 
 class Calendar {
   _events = [];
-
-  /**
-   * @description The method generates and returns a uniqId.
-   * @returns {string} unique Id
-   **/
-  _generateUniqId() {
-    const generateRandomString = () => {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    };
-
-    return (
-      generateRandomString() +
-      '-' +
-      generateRandomString() +
-      '-' +
-      generateRandomString() +
-      '-' +
-      generateRandomString()
-    );
-  }
 
   /**
    * @description The method checks the validity of the event object to use it in the addEvent method.
@@ -91,7 +71,7 @@ class Calendar {
       const timerId = setTimeout(callback, delay);
 
       const eventObj = {
-        id: this._generateUniqId(),
+        id: generateUniqId(),
         title,
         date,
         time,
@@ -318,4 +298,5 @@ class Calendar {
   }
 }
 
-const calendar = new Calendar();
+export const calendar = new Calendar();
+window.calendar = calendar;
