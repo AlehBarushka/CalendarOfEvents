@@ -21,15 +21,20 @@ export const timeValidator = (time) => {
 };
 
 /**
- * @description The function sets time and parses the reminder date.
+ * @description The function returns the current day of the week.
+ * @returns {Number} returns the current day of the week according to local time, where 0 represents Sunday.
+ **/
+export const getCurrentWeekDay = () => {
+  return new Date().getDay();
+};
+
+/**
+ * @description The function set the time and parse the set date of the reminder.
  * @param {string} time - time of reminder in format '15:00:00'.
- * @returns {Number} returns the date in milliseconds.
+ * @returns {Number} returns the set date in milliseconds.
  **/
 export const setTime = (time) => {
-  const DAY_IN_MILLISECONDS = 86400000;
-
   const currentDate = new Date();
-  const currentParsedDate = Date.now();
 
   const arrOfSettedTime = time.split(':');
 
@@ -43,9 +48,6 @@ export const setTime = (time) => {
     settedSecondsNumber
   );
 
-  const isTimeUp = settedParsedDate <= currentParsedDate;
-  const timeForTheNextDay = settedParsedDate + DAY_IN_MILLISECONDS;
-
-  return isTimeUp ? timeForTheNextDay : settedParsedDate;
+  return settedParsedDate;
 };
 
