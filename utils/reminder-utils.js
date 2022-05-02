@@ -50,7 +50,6 @@ const loop = (callback, delay, interval, reminderId) => {
  **/
 export const dailyLoop = (callback, time) => {
   const DAY_IN_MILLISECONDS = 86400000;
-  const interval = 1000;
 
   const reminderId = generateUniqId();
   let delay;
@@ -64,7 +63,7 @@ export const dailyLoop = (callback, time) => {
     delay = timeDifference;
   }
 
-  const timerId = loop(callback, delay, interval, reminderId);
+  const timerId = loop(callback, delay, DAY_IN_MILLISECONDS, reminderId);
 
   return { timerId, reminderId };
 };
