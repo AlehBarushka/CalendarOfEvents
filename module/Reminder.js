@@ -1,6 +1,5 @@
-import { setTime, timeValidator } from '../utils/dateUtils.js';
-import { generateUniqId } from '../utils/generateUniqId.js';
-import { dailyLoop, reminderValidator } from '../utils/reminderUtils.js';
+import { timeValidator } from '../utils/date-utils.js';
+import { dailyLoop, reminderValidator } from '../utils/reminder-utils.js';
 import { Calendar } from './Calendar.js';
 
 /**
@@ -11,15 +10,15 @@ import { Calendar } from './Calendar.js';
 
 class Reminder extends Calendar {
   /**
-   * @description The method adds a reminder for the specified time by repeating every day, by day of the week.
+   * @description The method adds a reminder for the specified time, repeating every day or by days of the week.
    * @param {Reminder} reminder - reminder object.
    * @param {function} callback - callback function that will be called every day or on the specified days of the week.
-   * @param {Array.<String>} [weekdays] - array with the weekdays for which to repeat.
+   * @param {Array.<String>} [daysOfWeek] - array with days of the week for which to repeat.
    * @returns {string} returns string 'Added successfully!'.
    * @example
    * addRepeatingReminder({ title: 'meeting', time: '12:00:00'}, () => { console.log('Meeting will start at 12:30:00') })
    */
-  addRepeatingReminder(reminder, callback, weekdays = []) {
+  addReminder(reminder, callback, daysOfWeek = []) {
     try {
       reminderValidator(reminder);
 
@@ -27,7 +26,7 @@ class Reminder extends Calendar {
 
       timeValidator(time);
 
-      if (weekdays.length === 0) {
+      if (daysOfWeek.length === 0) {
         const { reminderId, timerId } = dailyLoop(callback, time);
 
         const reminderObj = {
@@ -35,7 +34,7 @@ class Reminder extends Calendar {
           timerId,
           title,
           time,
-          repeat: weekdays,
+          repeat: 'Daily',
           callback,
         };
 
