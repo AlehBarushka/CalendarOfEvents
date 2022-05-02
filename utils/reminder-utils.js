@@ -1,5 +1,5 @@
 import { reminder } from '../module/Reminder.js';
-import { setTime } from './date-utils.js';
+import { getCurrentWeekDay, setTime } from './date-utils.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
@@ -32,8 +32,7 @@ const loop = (callback, delay, interval, reminderId) => {
 
     const index = reminders.findIndex((el) => el.id === reminderId);
 
-    reminders[index].intervalId = intervalId;
-    delete reminders[index].timerId;
+    reminders[index].intervalIDs.push(intervalId);
   }, delay);
 
   return timerId;
@@ -51,8 +50,9 @@ const loop = (callback, delay, interval, reminderId) => {
 export const dailyLoop = (callback, time) => {
   const DAY_IN_MILLISECONDS = 86400000;
 
-  const reminderId = generateUniqId();
   let delay;
+
+  const reminderId = generateUniqId();
 
   const timeDifference = setTime(time) - Date.now();
   const isTimeUp = timeDifference < 0;
@@ -66,5 +66,55 @@ export const dailyLoop = (callback, time) => {
   const timerId = loop(callback, delay, DAY_IN_MILLISECONDS, reminderId);
 
   return { timerId, reminderId };
+};
+
+/**
+ * @description The function sets the interval for the specified days of the week with a certain delay.
+ * @param {Function} callback - callback function that will be called at the interval.
+ * @param {String} time - time in format '12:00:00'.
+ * @param {Array.<Srting>} daysOfWeek - array with days of the week.
+ * @returns {Object} returns an object with the reminder ID and an array with setTimeout IDs.
+ * @example
+ * // returns {reminderId: 'f9ca-1baa-c970-35b4', timerIDs: [12, 13]}
+ * dailyLoop(() => console.log('Hello'), '12:00:00', ['Monday', 'Tuesday'])
+ **/
+export const daysOfWeekLoop = (callback, time, daysOfweek) => {
+  const WEEK_IN_MILLISECONDS = 604800000;
+  const DAY_IN_MILLISEC = 86400000;
+  const NUMBER_OF_WEEK_DAYS = 7;
+
+  let timerIDs = [];
+
+  const reminderId = generateUniqId();
+
+  const timeDifference = setTime(time) - Date.now();
+
+  daysOfweek.forEach((day) => {
+    const daysOfWeekDifference = getCurrentWeekDay() - day;
+    const isTimeUp = timeDifference < 0;
+
+    const willBeNextWeek =
+      daysOfWeekDifference > 0 || (isTimeUp && daysOfWeekDifference === 0);
+
+    if (willBeNextWeek) {
+      const delay =
+        timeDifference +
+        (NUMBER_OF_WEEK_DAYS - daysOfWeekDifference) * DAY_IN_MILLISEC;
+
+      const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS);
+
+      timerIDs.push(timerId);
+    }
+
+    if (!willBeNextWeek) {
+      const delay = timeDifference - daysOfWeekDifference * DAY_IN_MILLISEC;
+
+      const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS);
+
+      timerIDs.push(timerId);
+    }
+  });
+
+  return { reminderId, timerIDs };
 };
 
