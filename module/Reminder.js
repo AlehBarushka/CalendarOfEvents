@@ -34,6 +34,10 @@ export class Reminder extends Calendar {
 
       timeValidator(time);
 
+      if (!callback) {
+        throw new Error('Callback arg is required');
+      }
+
       daysOfWeekValidator(daysOfWeek);
 
       if (daysOfWeek.length === 0) {
