@@ -297,6 +297,3 @@ export class Calendar {
     }
   }
 }
-
-export const calendar = new Calendar();
-window.calendar = calendar;

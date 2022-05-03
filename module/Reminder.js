@@ -16,7 +16,7 @@ import { Calendar } from './Calendar.js';
  * @property {string} reminder.title - title of reminder.
  */
 
-class Reminder extends Calendar {
+export class Reminder extends Calendar {
   /**
    * @description The method adds a reminder for the specified time, repeating every day or by days of the week.
    * @param {Reminder} reminder - reminder object.
@@ -76,7 +76,3 @@ class Reminder extends Calendar {
     }
   }
 }
-
-export const reminder = new Reminder();
-window.reminder = reminder;
-
