@@ -31,3 +31,21 @@ export const daysOfWeekСonverter = (daysOfWeek) => {
   return arrOfDayNumbers;
 };
 
+/**
+ * @description The function check the validity of the array.
+ * @param {Array.<Srting>} daysOfWeek - array with days of the week.
+ * @returns {(boolean|Error)} returns true if the array is valid or returns an error if otherwise.
+ * @example
+ * // returns true
+ * daysOfWeekValidator(['Sunday', 'Monday', 'Tuesday'])
+ * // returns Error
+ * daysOfWeekValidator('Monday')
+ **/
+export const daysOfWeekValidator = (daysOfWeek) => {
+  if (Array.isArray(daysOfWeek)) {
+    return true;
+  } else {
+    throw new Error('Invalid days of week');
+  }
+};
+

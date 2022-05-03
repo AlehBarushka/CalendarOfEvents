@@ -1,5 +1,8 @@
 import { timeValidator } from '../utils/date-utils.js';
-import { daysOfWeekСonverter } from '../utils/daysOfWeek-utils.js';
+import {
+  daysOfWeekValidator,
+  daysOfWeekСonverter,
+} from '../utils/daysOfWeek-utils.js';
 import {
   dailyLoop,
   daysOfWeekLoop,
@@ -30,6 +33,8 @@ class Reminder extends Calendar {
       const { time, title } = reminder;
 
       timeValidator(time);
+
+      daysOfWeekValidator(daysOfWeek);
 
       if (daysOfWeek.length === 0) {
         const { reminderId, timerId } = dailyLoop(callback, time);
