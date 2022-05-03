@@ -7,7 +7,7 @@ import { generateUniqId } from '../utils/generateUniqId.js';
  * @property {string} event.title - title of event.
  */
 
-class Calendar {
+export class Calendar {
   _events = [];
 
   /**
@@ -297,6 +297,3 @@ class Calendar {
     }
   }
 }
-
-export const calendar = new Calendar();
-window.calendar = calendar;
