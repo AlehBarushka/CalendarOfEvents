@@ -22,6 +22,17 @@ export const reminderValidator = (reminder) => {
   }
 };
 
+/**
+ * @description The function sets the timeout and interval.
+ * @param {Function} callback - callback function that will be called at the interval.
+ * @param {Number} delay - setTimeout delay in millliseconds.
+ * @param {Number} interval - setInterval delay in millliseconds.
+ * @param {String} reminderId - reminder ID.
+ * @returns {Number} returns setTimout ID.
+ * @example
+ * // returns 12
+ * loop(() => console.log('Hello'), 10000, 86400000, 'f9ca-1baa-c970-35b4')
+ **/
 const loop = (callback, delay, interval, reminderId) => {
   const timerId = setTimeout(() => {
     callback();
