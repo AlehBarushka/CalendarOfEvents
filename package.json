@@ -1,20 +1,24 @@
 {
-	"name": "calendarofevents",
-	"version": "1.0.0",
-	"type": "module",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "node index.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/AlehBarushka/CalendarOfEvents.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/AlehBarushka/CalendarOfEvents/issues"
-	},
-	"homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme"
+  "name": "calendarofevents",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlehBarushka/CalendarOfEvents.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlehBarushka/CalendarOfEvents/issues"
+  },
+  "homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme",
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.17.9",
+    "jest": "^28.0.3"
+  }
 }
