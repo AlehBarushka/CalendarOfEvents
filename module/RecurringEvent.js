@@ -6,31 +6,32 @@ import {
 import {
   dailyLoop,
   daysOfWeekLoop,
-  reminderValidator,
-} from '../utils/reminder-utils.js';
+  recurringEventValidator,
+} from '../utils/recurringEvent-utils.js';
+
 import { Calendar } from './Calendar.js';
 
 /**
- * @typedef {Object} Reminder
- * @property {string} reminder.time - time in format '12:00:00'.
- * @property {string} reminder.title - title of reminder.
+ * @typedef {Object} RecurringEvent
+ * @property {string} RecurringEvent.time - time of recurring event in format '12:00:00'.
+ * @property {string} RecurringEvent.title - title of recurring event.
  */
 
-class Reminder extends Calendar {
+class RecurringEvent extends Calendar {
   /**
-   * @description The method adds a reminder for the specified time, repeating every day or by days of the week.
-   * @param {Reminder} reminder - reminder object.
+   * @description The method adds an event for the specified time, repeated every day or on days of the week.
+   * @param {RecurringEvent} event - event object.
    * @param {function} callback - callback function that will be called every day or on the specified days of the week.
    * @param {Array.<String>} [daysOfWeek] - array with days of the week for which to repeat.
    * @returns {string} returns string 'Added successfully!'.
    * @example
-   * addRepeatingReminder({ title: 'meeting', time: '12:00:00'}, () => { console.log('Meeting will start at 12:30:00') })
+   * addRecurringEvent({ title: 'meeting', time: '12:00:00'}, () => { console.log('Meeting will start at 12:30:00') })
    */
-  addReminder(reminder, callback, daysOfWeek = []) {
+  addRecurringEvent(event, callback, daysOfWeek = []) {
     try {
-      reminderValidator(reminder);
+      recurringEventValidator(event);
 
-      const { time, title } = reminder;
+      const { time, title } = event;
 
       timeValidator(time);
 
@@ -41,10 +42,10 @@ class Reminder extends Calendar {
       daysOfWeekValidator(daysOfWeek);
 
       if (daysOfWeek.length === 0) {
-        const { reminderId, timerId } = dailyLoop(callback, time);
+        const { eventId, timerId } = dailyLoop(callback, time);
 
-        const reminderObj = {
-          id: reminderId,
+        const recurringEventObj = {
+          id: eventId,
           timerIDs: [timerId],
           intervalIDs: [],
           title,
@@ -53,16 +54,16 @@ class Reminder extends Calendar {
           callback,
         };
 
-        this._events.push(reminderObj);
+        this._events.push(recurringEventObj);
       }
 
       if (daysOfWeek.length > 0) {
         const days = daysOfWeekСonverter(daysOfWeek);
 
-        const { reminderId, timerIDs } = daysOfWeekLoop(callback, time, days);
+        const { eventId, timerIDs } = daysOfWeekLoop(callback, time, days);
 
-        const reminderObj = {
-          id: reminderId,
+        const recurringEventObj = {
+          id: eventId,
           timerIDs: [...timerIDs],
           intervalIDs: [],
           title,
@@ -71,7 +72,7 @@ class Reminder extends Calendar {
           callback,
         };
 
-        this._events.push(reminderObj);
+        this._events.push(recurringEventObj);
       }
 
       return 'Added successfully!';
@@ -81,5 +82,5 @@ class Reminder extends Calendar {
   }
 }
 
-export const reminder = new Reminder();
-window.reminder = reminder;
+export const recurringEvent = new RecurringEvent();
+window.recurringEvent = recurringEvent;
