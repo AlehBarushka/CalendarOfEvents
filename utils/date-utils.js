@@ -29,8 +29,8 @@ export const getCurrentWeekDay = () => {
 };
 
 /**
- * @description The function set the time and parse the set date of the reminder.
- * @param {string} time - time of reminder in format '15:00:00'.
+ * @description The function set the time and parse the set date of the recurring event.
+ * @param {string} time - time of recurring event in format '15:00:00'.
  * @returns {Number} returns the set date in milliseconds.
  **/
 export const setTime = (time) => {
@@ -50,4 +50,3 @@ export const setTime = (time) => {
 
   return settedParsedDate;
 };
-
