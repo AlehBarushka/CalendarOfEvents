@@ -4,9 +4,9 @@
  * @returns {Array.<Number>} returns an array with the days of the week in numerical representation.
  * @example
  * // returns [0, 1, 2]
- * reminderValidator(['Sunday', 'Monday', 'Tuesday'])
+ * daysOfWeekСonverter(['Sunday', 'Monday', 'Tuesday'])
  * // returns [1, 2, 0]
- * reminderValidator(['Monday', 'Tuesday', 'Sunday'])
+ * daysOfWeekСonverter(['Monday', 'Tuesday', 'Sunday'])
  **/
 export const daysOfWeekСonverter = (daysOfWeek) => {
   const days = [
@@ -48,4 +48,3 @@ export const daysOfWeekValidator = (daysOfWeek) => {
     throw new Error('Invalid days of week');
   }
 };
-
