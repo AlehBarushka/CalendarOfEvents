@@ -17,7 +17,7 @@ import { Calendar } from './Calendar.js';
  * @property {string} RecurringEvent.title - title of recurring event.
  */
 
-class RecurringEvent extends Calendar {
+export class RecurringEvent extends Calendar {
   /**
    * @description The method adds an event for the specified time, repeated every day or on days of the week.
    * @param {RecurringEvent} event - event object.
@@ -81,6 +81,3 @@ class RecurringEvent extends Calendar {
     }
   }
 }
-
-export const recurringEvent = new RecurringEvent();
-window.recurringEvent = recurringEvent;
