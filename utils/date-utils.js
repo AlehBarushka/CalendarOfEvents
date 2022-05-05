@@ -23,22 +23,77 @@ export const dateParser = (date, time) => {
 };
 
 /**
+ * @description The function check whether the passed value is a number and whether it is greater than zero.
+ * @param {Number} value - the value to be checked.
+ * @returns {Boolean} returns true if the value satisfies the conditions or returns false if otherwise.
+ * @example
+ * //returns true
+ * isValid(12)
+ * //returns false
+ * isValid([1])
+ * //returns false
+ * isValid('1')
+ */
+const isValid = (value) => {
+  const isNumber = Number.isInteger(value);
+
+  const isGreaterThanZero = value >= 0;
+
+  return isNumber && isGreaterThanZero ? true : false;
+};
+
+/**
  * @description The function checks the validity of the reminder time object.
  * @param {ReminderTime} reminderTime - object of the reminder time.
  * @returns {(Boolean|Error)} returns true if the object is valid, or returns an error if otherwise.
  * @example
  * //returns true
- * reminderTimeObjValidator({hours: 12})
+ * reminderTimeValidator({hours: 12})
  * //returns true
- * reminderTimeObjValidator({minutes: 10, hours: 1})
+ * reminderTimeValidator({minutes: 10, hours: -1})
  * //returns Error
- * reminderTimeObjValidator({})
+ * reminderTimeValidator({minutes: '10', hours: -1})
  */
-export const reminderTimeObjValidator = (reminderTime) => {
-  if (reminderTime?.hours || reminderTime?.minutes) {
+export const reminderTimeValidator = (reminderTime) => {
+  const { minutes, hours } = reminderTime;
+
+  if (isValid(minutes) || isValid(hours)) {
     return true;
   } else {
-    throw new Error('Invalid reminder time object');
+    throw new Error('Invalid reminder time');
   }
+};
+
+/**
+ * @description The function converts the transmitted minutes and hours into milliseconds.
+ * @param {ReminderTime} reminderTime - object of the reminder time.
+ * @returns {Number} returns minutes and hours in milliseconds.
+ * @example
+ * //returns 3600000
+ * reminderTimeValidator({hours: 1})
+ * //returns 600000
+ * reminderTimeValidator({minutes: 10})
+ * //returns 4200000
+ * reminderTimeValidator({minutes: 10, hours: 1})
+ */
+export const reminderTimeConvertor = (reminderTime) => {
+  const MILLISECONDS_IN_MINUTE = 60000;
+  const MINUTES_IN_HOUR = 60;
+
+  let { hours, minutes } = reminderTime;
+
+  if (!hours || !isValid(hours)) {
+    hours = 0;
+  }
+
+  if (!minutes || !isValid(minutes)) {
+    minutes = 0;
+  }
+
+  const timeInMilliseconds =
+    hours * MINUTES_IN_HOUR * MILLISECONDS_IN_MINUTE +
+    minutes * MILLISECONDS_IN_MINUTE;
+
+  return timeInMilliseconds;
 };
 
