@@ -1,8 +1,5 @@
-import {
-  dateParser,
-  reminderTimeConvertor,
-  reminderTimeValidator,
-} from '../utils/date-utils.js';
+import { reminderTimeValidator } from '../utils/date-utils.js';
+import { addReminderTimeout } from '../utils/reminder-utils.js';
 import { Calendar } from './Calendar.js';
 
 /**
@@ -34,14 +31,7 @@ class Reminder extends Calendar {
       if (index !== -1) {
         const { date, time } = events[index];
 
-        const parsedEventDate = dateParser(date, time);
-        const remainingTime = parsedEventDate - Date.now();
-
-        const reminderTimeInMilliseconds = reminderTimeConvertor(reminderTime);
-
-        const delay = remainingTime - reminderTimeInMilliseconds;
-
-        const reminderTimerId = setTimeout(callback, delay);
+        const reminderTimerId = addReminderTimeout(date, time, callback);
 
         events[index].reminderTimerId = reminderTimerId;
 
@@ -49,6 +39,48 @@ class Reminder extends Calendar {
       } else {
         throw new Error('Event not found');
       }
+    } catch (error) {
+      return error;
+    }
+  }
+
+  /**
+   * @description The method adds reminder (a callback function) to all events that are called before the events occur.
+   * @param {Function} callback - the callback function that will be called before the event occurs.
+   * @param {ReminderTime} reminderTime - reminder time obj.
+   * @returns {String} returns string 'Added successfully!'.
+   * @example addReminderForAllEvents(() => console.log('Happy Birthday'), {hours: 1, minutes: 30})
+   */
+  addReminderForAllEvents(callback, reminderTime) {
+    try {
+      if (!callback) {
+        throw new Error('Callback parameter is required');
+      }
+
+      reminderTimeValidator(reminderTime);
+
+      const events = this.getEvents();
+
+      if (events.length === 0) {
+        return 'There are no objects with events';
+      }
+
+      if (events.length > 0) {
+        events.forEach((event) => {
+          const { date, time } = event;
+
+          const reminderTimerId = addReminderTimeout(
+            date,
+            time,
+            reminderTime,
+            callback
+          );
+
+          event.reminderTimerId = reminderTimerId;
+        });
+      }
+
+      return 'Added successfully!';
     } catch (error) {
       return error;
     }
