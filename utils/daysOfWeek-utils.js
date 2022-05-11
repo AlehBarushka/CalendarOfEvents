@@ -1,3 +1,5 @@
+import { days } from '../constants/daysOfWeek.js';
+
 /**
  * @description The function returns an array with the days of the week in numerical representation.
  * @param {Array.<Srting>} daysOfWeek - array with days of the week.
@@ -9,16 +11,6 @@
  * daysOfWeekСonverter(['Monday', 'Tuesday', 'Sunday'])
  **/
 export const daysOfWeekСonverter = (daysOfWeek) => {
-  const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-
   let arrOfDayNumbers = [];
 
   daysOfWeek.forEach((day) => {
@@ -37,12 +29,16 @@ export const daysOfWeekСonverter = (daysOfWeek) => {
  * @returns {(boolean|Error)} returns true if the array is valid or returns an error if otherwise.
  * @example
  * // returns true
- * daysOfWeekValidator(['Sunday', 'Monday', 'Tuesday'])
+ * arrayValidator(['Sunday', 'Monday', 'Tuesday'])
  * // returns Error
- * daysOfWeekValidator('Monday')
+ * arrayValidator('Monday')
  **/
-export const daysOfWeekValidator = (daysOfWeek) => {
-  if (Array.isArray(daysOfWeek)) {
+export const arrayValidator = (daysOfWeek) => {
+  if (
+    Array.isArray(daysOfWeek) &&
+    daysOfWeek.length <= 7 &&
+    daysOfWeek.length > 0
+  ) {
     return true;
   } else {
     throw new Error('Invalid days of week');
