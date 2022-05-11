@@ -1,5 +1,5 @@
 import { recurringEvent } from '../module/RecurringEvent.js';
-import { getCurrentWeekDay, setTime } from './date-utils.js';
+import { setTime } from './date-utils.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
@@ -101,7 +101,7 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
   const timeDifference = setTime(time) - Date.now();
 
   daysOfweek.forEach((day) => {
-    const daysOfWeekDifference = getCurrentWeekDay() - day;
+    const daysOfWeekDifference = new Date().getDay() - day;
     const isTimeUp = timeDifference < 0;
 
     const willBeNextWeek =

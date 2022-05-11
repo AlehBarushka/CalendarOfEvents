@@ -21,14 +21,6 @@ export const timeValidator = (time) => {
 };
 
 /**
- * @description The function returns the current day of the week.
- * @returns {Number} returns the current day of the week according to local time, where 0 represents Sunday.
- **/
-export const getCurrentWeekDay = () => {
-  return new Date().getDay();
-};
-
-/**
  * @description The function set the time and parse the set date of the recurring event.
  * @param {string} time - time of recurring event in format '15:00:00'.
  * @returns {Number} returns the set date in milliseconds.
