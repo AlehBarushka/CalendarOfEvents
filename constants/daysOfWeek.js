@@ -1,4 +1,4 @@
-export const days = [
+export const DAYS = [
   'Sunday',
   'Monday',
   'Tuesday',
@@ -7,4 +7,8 @@ export const days = [
   'Friday',
   'Saturday',
 ];
+
+export const WEEK_IN_MILLISECONDS = 604800000;
+export const DAY_IN_MILLISECONDS = 86400000;
+export const NUMBER_OF_WEEK_DAYS = 7;
 

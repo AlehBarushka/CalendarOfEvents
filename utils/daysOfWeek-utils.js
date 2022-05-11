@@ -1,4 +1,4 @@
-import { days } from '../constants/daysOfWeek.js';
+import { DAYS_OF_WEEK, NUMBER_OF_WEEK_DAYS } from '../constants/daysOfWeek.js';
 
 /**
  * @description The function returns an array with the days of the week in numerical representation.
@@ -14,7 +14,7 @@ export const daysOfWeekСonverter = (daysOfWeek) => {
   let arrOfDayNumbers = [];
 
   daysOfWeek.forEach((day) => {
-    const index = days.findIndex((el) => el === day);
+    const index = DAYS_OF_WEEK.findIndex((el) => el === day);
     if (index !== -1) {
       arrOfDayNumbers.push(index);
     }
@@ -36,7 +36,7 @@ export const daysOfWeekСonverter = (daysOfWeek) => {
 export const arrayValidator = (daysOfWeek) => {
   if (
     Array.isArray(daysOfWeek) &&
-    daysOfWeek.length <= 7 &&
+    daysOfWeek.length <= NUMBER_OF_WEEK_DAYS &&
     daysOfWeek.length > 0
   ) {
     return true;
