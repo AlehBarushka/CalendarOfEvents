@@ -1,13 +1,10 @@
-import { timeValidator } from '../utils/date-utils.js';
-import {
-  arrayValidator,
-  daysOfWeekСonverter,
-} from '../utils/daysOfWeek-utils.js';
+import { timeValidator } from '../utils/date.js';
+import { arrayValidator, daysOfWeekСonverter } from '../utils/daysOfWeek.js';
 import {
   dailyLoop,
   daysOfWeekLoop,
   recurringEventValidator,
-} from '../utils/recurringEvent-utils.js';
+} from '../utils/recurringEvent.js';
 
 import { Calendar } from './Calendar.js';
 

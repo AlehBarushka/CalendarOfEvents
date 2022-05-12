@@ -4,7 +4,7 @@ import {
   WEEK_IN_MILLISECONDS,
 } from '../constants/daysOfWeek.js';
 import { recurringEvent } from '../module/RecurringEvent.js';
-import { getTimeInMillisecond } from './date-utils.js';
+import { getTimeInMillisecond } from './date.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
