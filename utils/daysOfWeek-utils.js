@@ -37,7 +37,7 @@ export const arrayValidator = (daysOfWeek) => {
   if (
     Array.isArray(daysOfWeek) &&
     daysOfWeek.length <= NUMBER_OF_WEEK_DAYS &&
-    daysOfWeek.length > 0
+    daysOfWeek.length >= 0
   ) {
     return true;
   } else {
