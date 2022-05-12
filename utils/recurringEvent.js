@@ -8,6 +8,14 @@ import { getTimeInMillisecond } from './date.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
+ * @typedef {Object} LoopData
+ * @property {Function} LoopData.callback - callback function that will be called at the interval.
+ * @property {Number} LoopData.delay - setTimeout delay in millliseconds.
+ * @property {Number} LoopData.interval - setInterval delay in millliseconds.
+ * @property {String} LoopData.eventId - recurringEvent ID.
+ */
+
+/**
  * @description The function checks the validity of the recurring event object.
  * @param {Object} event - event object.
  * @param {String} event.title - title of recurring event.
@@ -29,16 +37,15 @@ export const recurringEventValidator = (event) => {
 
 /**
  * @description The function sets the timeout and interval.
- * @param {Function} callback - callback function that will be called at the interval.
- * @param {Number} delay - setTimeout delay in millliseconds.
- * @param {Number} interval - setInterval delay in millliseconds.
- * @param {String} eventId - recurringEvent ID.
+ * @param {LoopData} loopData - an object with data for loop operation.
  * @returns {Number} returns setTimout ID.
  * @example
  * // returns 12
  * loop(() => console.log('Hello'), 10000, 86400000, 'f9ca-1baa-c970-35b4')
  **/
-const loop = (callback, delay, interval, eventId) => {
+const loop = (loopData) => {
+  const { callback, delay, interval, eventId } = loopData;
+
   const timerId = setTimeout(() => {
     callback();
 
@@ -77,7 +84,9 @@ export const dailyLoop = (callback, time) => {
     delay = timeDifference;
   }
 
-  const timerId = loop(callback, delay, DAY_IN_MILLISECONDS, eventId);
+  const data = { callback, delay, DAY_IN_MILLISECONDS, eventId };
+
+  const timerId = loop(data);
 
   return { timerId, eventId };
 };
