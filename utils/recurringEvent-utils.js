@@ -4,7 +4,7 @@ import {
   WEEK_IN_MILLISECONDS,
 } from '../constants/daysOfWeek.js';
 import { recurringEvent } from '../module/RecurringEvent.js';
-import { setTime } from './date-utils.js';
+import { getTimeInMillisecond } from './date-utils.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
@@ -68,7 +68,7 @@ export const dailyLoop = (callback, time) => {
 
   const eventId = generateUniqId();
 
-  const timeDifference = setTime(time) - Date.now();
+  const timeDifference = getTimeInMillisecond(time) - Date.now();
   const isTimeUp = timeDifference < 0;
 
   if (isTimeUp) {
@@ -97,7 +97,7 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
 
   const eventId = generateUniqId();
 
-  const timeDifference = setTime(time) - Date.now();
+  const timeDifference = getTimeInMillisecond(time) - Date.now();
 
   daysOfweek.forEach((day) => {
     const daysOfWeekDifference = new Date().getDay() - day;

@@ -21,24 +21,14 @@ export const timeValidator = (time) => {
 };
 
 /**
- * @description The function set the time and parse the set date of the recurring event.
+ * @description The function gets milliseconds from the string time value.
  * @param {string} time - time of recurring event in format '15:00:00'.
- * @returns {Number} returns the set date in milliseconds.
+ * @returns {Number} returns the set time in milliseconds.
  **/
-export const setTime = (time) => {
-  const currentDate = new Date();
+export const getTimeInMillisecond = (time) => {
+  const [hours, minutes, seconds] = time.split(':');
 
-  const arrOfSettedTime = time.split(':');
+  const timeInMillisecond = new Date().setHours(hours, minutes, seconds);
 
-  const settedHoursNumber = parseInt(arrOfSettedTime[0]);
-  const settedMinutesNumber = parseInt(arrOfSettedTime[1]);
-  const settedSecondsNumber = parseInt(arrOfSettedTime[2]);
-
-  const settedParsedDate = currentDate.setHours(
-    settedHoursNumber,
-    settedMinutesNumber,
-    settedSecondsNumber
-  );
-
-  return settedParsedDate;
+  return timeInMillisecond;
 };
