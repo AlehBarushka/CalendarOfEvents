@@ -1,5 +1,5 @@
-import { reminderTimeValidator } from '../utils/date-utils.js';
-import { addReminderTimeout } from '../utils/reminder-utils.js';
+import { reminderTimeValidator } from '../utils/date.js';
+import { addReminderTimeout } from '../utils/reminder.js';
 import { Calendar } from './Calendar.js';
 
 /**

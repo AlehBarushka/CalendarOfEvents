@@ -1,4 +1,4 @@
-import { dateParser, reminderTimeConvertor } from './date-utils.js';
+import { dateParser, reminderTimeConvertor } from './date.js';
 
 /**
  * @typedef {Object} ReminderTime
@@ -30,4 +30,3 @@ export const addReminderTimeout = (date, time, reminderTime, callback) => {
 
   return reminderTimerId;
 };
-

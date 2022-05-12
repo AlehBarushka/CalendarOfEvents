@@ -96,4 +96,3 @@ export const reminderTimeConvertor = (reminderTime) => {
 
   return timeInMilliseconds;
 };
-
