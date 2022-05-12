@@ -1,6 +1,19 @@
+import {
+  DAY_IN_MILLISECONDS,
+  NUMBER_OF_WEEK_DAYS,
+  WEEK_IN_MILLISECONDS,
+} from '../constants/daysOfWeek.js';
 import { recurringEvent } from '../module/RecurringEvent.js';
-import { getCurrentWeekDay, setTime } from './date-utils.js';
+import { getTimeInMillisecond } from './date.js';
 import { generateUniqId } from './generateUniqId.js';
+
+/**
+ * @typedef {Object} LoopData
+ * @property {Function} LoopData.callback - callback function that will be called at the interval.
+ * @property {Number} LoopData.delay - setTimeout delay in millliseconds.
+ * @property {Number} LoopData.interval - setInterval delay in millliseconds.
+ * @property {String} LoopData.eventId - recurringEvent ID.
+ */
 
 /**
  * @description The function checks the validity of the recurring event object.
@@ -24,16 +37,15 @@ export const recurringEventValidator = (event) => {
 
 /**
  * @description The function sets the timeout and interval.
- * @param {Function} callback - callback function that will be called at the interval.
- * @param {Number} delay - setTimeout delay in millliseconds.
- * @param {Number} interval - setInterval delay in millliseconds.
- * @param {String} eventId - recurringEvent ID.
+ * @param {LoopData} loopData - an object with data for loop operation.
  * @returns {Number} returns setTimout ID.
  * @example
  * // returns 12
  * loop(() => console.log('Hello'), 10000, 86400000, 'f9ca-1baa-c970-35b4')
  **/
-const loop = (callback, delay, interval, eventId) => {
+const loop = (loopData) => {
+  const { callback, delay, interval, eventId } = loopData;
+
   const timerId = setTimeout(() => {
     callback();
 
@@ -59,13 +71,11 @@ const loop = (callback, delay, interval, eventId) => {
  * dailyLoop(() => console.log('Hello'), '12:00:00')
  **/
 export const dailyLoop = (callback, time) => {
-  const DAY_IN_MILLISECONDS = 86400000;
-
   let delay;
 
   const eventId = generateUniqId();
 
-  const timeDifference = setTime(time) - Date.now();
+  const timeDifference = getTimeInMillisecond(time) - Date.now();
   const isTimeUp = timeDifference < 0;
 
   if (isTimeUp) {
@@ -74,7 +84,9 @@ export const dailyLoop = (callback, time) => {
     delay = timeDifference;
   }
 
-  const timerId = loop(callback, delay, DAY_IN_MILLISECONDS, eventId);
+  const data = { callback, delay, DAY_IN_MILLISECONDS, eventId };
+
+  const timerId = loop(data);
 
   return { timerId, eventId };
 };
@@ -90,18 +102,14 @@ export const dailyLoop = (callback, time) => {
  * dailyLoop(() => console.log('Hello'), '12:00:00', ['Monday', 'Tuesday'])
  **/
 export const daysOfWeekLoop = (callback, time, daysOfweek) => {
-  const WEEK_IN_MILLISECONDS = 604800000;
-  const DAY_IN_MILLISEC = 86400000;
-  const NUMBER_OF_WEEK_DAYS = 7;
-
   let timerIDs = [];
 
   const eventId = generateUniqId();
 
-  const timeDifference = setTime(time) - Date.now();
+  const timeDifference = getTimeInMillisecond(time) - Date.now();
 
   daysOfweek.forEach((day) => {
-    const daysOfWeekDifference = getCurrentWeekDay() - day;
+    const daysOfWeekDifference = new Date().getDay() - day;
     const isTimeUp = timeDifference < 0;
 
     const willBeNextWeek =
@@ -110,7 +118,7 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
     if (willBeNextWeek) {
       const delay =
         timeDifference +
-        (NUMBER_OF_WEEK_DAYS - daysOfWeekDifference) * DAY_IN_MILLISEC;
+        (NUMBER_OF_WEEK_DAYS - daysOfWeekDifference) * DAY_IN_MILLISECONDS;
 
       const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS, eventId);
 
@@ -118,7 +126,7 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
     }
 
     if (!willBeNextWeek) {
-      const delay = timeDifference - daysOfWeekDifference * DAY_IN_MILLISEC;
+      const delay = timeDifference - daysOfWeekDifference * DAY_IN_MILLISECONDS;
 
       const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS, eventId);
 
