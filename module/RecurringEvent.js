@@ -36,8 +36,6 @@ class RecurringEvent extends Calendar {
         throw new Error('Callback arg is required');
       }
 
-      daysOfWeekValidator(daysOfWeek);
-
       if (daysOfWeek.length === 0) {
         const { eventId, timerId } = dailyLoop(callback, time);
 
@@ -55,6 +53,8 @@ class RecurringEvent extends Calendar {
       }
 
       if (daysOfWeek.length > 0) {
+        daysOfWeekValidator(daysOfWeek);
+
         const days = daysOfWeekСonverter(daysOfWeek);
 
         const { eventId, timerIDs } = daysOfWeekLoop(callback, time, days);
