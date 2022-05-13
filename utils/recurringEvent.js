@@ -2,9 +2,9 @@ import {
   DAY_IN_MILLISECONDS,
   NUMBER_OF_WEEK_DAYS,
   WEEK_IN_MILLISECONDS,
-} from '../constants/daysOfWeek.js';
+} from '../constants/index.js';
 import { recurringEvent } from '../module/RecurringEvent.js';
-import { getTimeInMillisecond } from './date.js';
+import { getTimeInMillisecond, timeValidator } from './date.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
@@ -29,9 +29,11 @@ import { generateUniqId } from './generateUniqId.js';
  **/
 export const recurringEventValidator = (event) => {
   if (event?.title && event.time) {
+    timeValidator(event.time);
+
     return true;
   } else {
-    throw new Error('Invalid event');
+    throw new Error('Invalid event object');
   }
 };
 
@@ -43,9 +45,7 @@ export const recurringEventValidator = (event) => {
  * // returns 12
  * loop(() => console.log('Hello'), 10000, 86400000, 'f9ca-1baa-c970-35b4')
  **/
-const loop = (loopData) => {
-  const { callback, delay, interval, eventId } = loopData;
-
+const loop = ({ callback, delay, interval, eventId }) => {
   const timerId = setTimeout(() => {
     callback();
 
@@ -102,7 +102,7 @@ export const dailyLoop = (callback, time) => {
  * dailyLoop(() => console.log('Hello'), '12:00:00', ['Monday', 'Tuesday'])
  **/
 export const daysOfWeekLoop = (callback, time, daysOfweek) => {
-  let timerIDs = [];
+  const timerIDs = [];
 
   const eventId = generateUniqId();
 
@@ -120,7 +120,9 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
         timeDifference +
         (NUMBER_OF_WEEK_DAYS - daysOfWeekDifference) * DAY_IN_MILLISECONDS;
 
-      const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS, eventId);
+      const data = { callback, delay, WEEK_IN_MILLISECONDS, eventId };
+
+      const timerId = loop(data);
 
       timerIDs.push(timerId);
     }
@@ -128,7 +130,9 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
     if (!willBeNextWeek) {
       const delay = timeDifference - daysOfWeekDifference * DAY_IN_MILLISECONDS;
 
-      const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS, eventId);
+      const data = { callback, delay, WEEK_IN_MILLISECONDS, eventId };
+
+      const timerId = loop(data);
 
       timerIDs.push(timerId);
     }
