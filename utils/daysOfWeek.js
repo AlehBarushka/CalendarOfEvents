@@ -67,5 +67,3 @@ export const daysOfWeekValidator = (daysOfWeek) => {
     throw new Error('Invalid array of the days of week');
   }
 };
-
-window.daysOfWeekСonverter = daysOfWeekСonverter;
