@@ -4,7 +4,7 @@ import {
   WEEK_IN_MILLISECONDS,
 } from '../constants/daysOfWeek.js';
 import { recurringEvent } from '../module/RecurringEvent.js';
-import { getTimeInMillisecond } from './date.js';
+import { getTimeInMillisecond, timeValidator } from './date.js';
 import { generateUniqId } from './generateUniqId.js';
 
 /**
@@ -29,6 +29,8 @@ import { generateUniqId } from './generateUniqId.js';
  **/
 export const recurringEventValidator = (event) => {
   if (event?.title && event.time) {
+    timeValidator(event.time);
+
     return true;
   } else {
     throw new Error('Invalid event');
@@ -134,3 +136,5 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
 
   return { eventId, timerIDs };
 };
+
+window.recurringEventValidator = recurringEventValidator;

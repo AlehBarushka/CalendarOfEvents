@@ -1,4 +1,3 @@
-import { timeValidator } from '../utils/date.js';
 import { arrayValidator, daysOfWeekСonverter } from '../utils/daysOfWeek.js';
 import {
   dailyLoop,
@@ -29,8 +28,6 @@ class RecurringEvent extends Calendar {
       recurringEventValidator(event);
 
       const { time, title } = event;
-
-      timeValidator(time);
 
       if (!callback) {
         throw new Error('Callback arg is required');
