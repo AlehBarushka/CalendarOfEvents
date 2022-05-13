@@ -11,16 +11,16 @@ import { DAYS_OF_WEEK, NUMBER_OF_WEEK_DAYS } from '../constants/daysOfWeek.js';
  * daysOfWeekСonverter(['Monday', 'Tuesday', 'Sunday'])
  **/
 export const daysOfWeekСonverter = (daysOfWeek) => {
-  let arrOfDayNumbers = [];
+  const daysNumbers = [];
 
   daysOfWeek.forEach((day) => {
     const index = DAYS_OF_WEEK.findIndex((el) => el === day);
     if (index !== -1) {
-      arrOfDayNumbers.push(index);
+      daysNumbers.push(index);
     }
   });
 
-  return arrOfDayNumbers;
+  return daysNumbers;
 };
 
 /**
