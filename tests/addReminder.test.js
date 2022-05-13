@@ -22,7 +22,7 @@ describe('RecurringEvent: addRecurringEvent', () => {
         nonValidRecurringEventSample,
         callbackSample
       )
-    ).toEqual(new Error('Invalid event'));
+    ).toEqual(new Error('Invalid event object'));
   });
 
   test('should throw an error if called with a valid recurring event object, but with an invalid time field', () => {
@@ -45,7 +45,7 @@ describe('RecurringEvent: addRecurringEvent', () => {
         callbackSample,
         invalidDaysOfWeek
       )
-    ).toEqual(new Error('Invalid days of week'));
+    ).toEqual(new Error('Invalid array of the days of week'));
   });
 
   test('should throw an error if called without callback arg', () => {
