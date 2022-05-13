@@ -4,6 +4,8 @@
  * @property {Number} ReminderTime.minutes - number of minutes.
  */
 
+import { MILLISECONDS_IN_MINUTE, MINUTES_IN_HOUR } from '../constants/index.js';
+
 /**
  * @description The function converts the time and date into milliseconds.
  * @param {String} date - date in format '2022-04-06'.
@@ -77,9 +79,6 @@ export const reminderTimeValidator = (reminderTime) => {
  * reminderTimeValidator({minutes: 10, hours: 1})
  */
 export const reminderTimeConvertor = (reminderTime) => {
-  const MILLISECONDS_IN_MINUTE = 60000;
-  const MINUTES_IN_HOUR = 60;
-
   let { hours, minutes } = reminderTime;
 
   if (!hours || !isValid(hours)) {
