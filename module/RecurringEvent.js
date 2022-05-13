@@ -1,4 +1,7 @@
-import { arrayValidator, daysOfWeekСonverter } from '../utils/daysOfWeek.js';
+import {
+  daysOfWeekValidator,
+  daysOfWeekСonverter,
+} from '../utils/daysOfWeek.js';
 import {
   dailyLoop,
   daysOfWeekLoop,
@@ -33,7 +36,7 @@ class RecurringEvent extends Calendar {
         throw new Error('Callback arg is required');
       }
 
-      arrayValidator(daysOfWeek);
+      daysOfWeekValidator(daysOfWeek);
 
       if (daysOfWeek.length === 0) {
         const { eventId, timerId } = dailyLoop(callback, time);
