@@ -43,9 +43,7 @@ export const recurringEventValidator = (event) => {
  * // returns 12
  * loop(() => console.log('Hello'), 10000, 86400000, 'f9ca-1baa-c970-35b4')
  **/
-const loop = (loopData) => {
-  const { callback, delay, interval, eventId } = loopData;
-
+const loop = ({ callback, delay, interval, eventId }) => {
   const timerId = setTimeout(() => {
     callback();
 
@@ -102,7 +100,7 @@ export const dailyLoop = (callback, time) => {
  * dailyLoop(() => console.log('Hello'), '12:00:00', ['Monday', 'Tuesday'])
  **/
 export const daysOfWeekLoop = (callback, time, daysOfweek) => {
-  let timerIDs = [];
+  const timerIDs = [];
 
   const eventId = generateUniqId();
 
