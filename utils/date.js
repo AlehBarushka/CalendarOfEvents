@@ -25,23 +25,21 @@ export const dateParser = (date, time) => {
 };
 
 /**
- * @description The function check whether the passed value is a number and whether it is greater than zero.
+ * @description The function check whether the passed value is a number and whether it is greater than or equal to zero.
  * @param {Number} value - the value to be checked.
  * @returns {Boolean} returns true if the value satisfies the conditions or returns false if otherwise.
  * @example
  * //returns true
- * isValid(12)
+ * isGreaterThanOrEqualToZero(12)
  * //returns false
- * isValid([1])
- * //returns false
- * isValid('1')
+ * isGreaterThanOrEqualToZero([1])
  */
-const isValid = (value) => {
+const isGreaterThanOrEqualToZero = (value) => {
   const isNumber = Number.isInteger(value);
 
-  const isGreaterThanZero = value >= 0;
+  const isGreaterThanOrEqualToZero = value >= 0;
 
-  return isNumber && isGreaterThanZero ? true : false;
+  return isNumber && isGreaterThanOrEqualToZero;
 };
 
 /**
@@ -59,7 +57,10 @@ const isValid = (value) => {
 export const reminderTimeValidator = (reminderTime) => {
   const { minutes, hours } = reminderTime;
 
-  if (isValid(minutes) || isValid(hours)) {
+  if (
+    isGreaterThanOrEqualToZero(minutes) ||
+    isGreaterThanOrEqualToZero(hours)
+  ) {
     return true;
   } else {
     throw new Error('Invalid reminder time');
