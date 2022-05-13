@@ -16,5 +16,8 @@
 	"bugs": {
 		"url": "https://github.com/AlehBarushka/CalendarOfEvents/issues"
 	},
-	"homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme"
+	"homepage": "https://github.com/AlehBarushka/CalendarOfEvents#readme",
+	"devDependencies": {
+		"eslint": "^8.15.0"
+	}
 }

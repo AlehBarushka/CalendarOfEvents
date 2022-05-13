@@ -53,7 +53,7 @@ const loop = ({ callback, delay, interval, eventId }) => {
 
     const events = recurringEvent.getEvents();
 
-    const index = reminders.findIndex((el) => el.id === eventId);
+    const index = events.findIndex((el) => el.id === eventId);
 
     events[index].intervalIDs.push(intervalId);
   }, delay);

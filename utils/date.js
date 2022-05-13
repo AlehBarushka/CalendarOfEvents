@@ -12,7 +12,6 @@ export const timeValidator = (time) => {
   const isValid = /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/.test(
     time
   );
-
   if (isValid) {
     return true;
   } else {
