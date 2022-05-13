@@ -2,7 +2,7 @@ import {
   DAY_IN_MILLISECONDS,
   NUMBER_OF_WEEK_DAYS,
   WEEK_IN_MILLISECONDS,
-} from '../constants/daysOfWeek.js';
+} from '../constants/index.js';
 import { recurringEvent } from '../module/RecurringEvent.js';
 import { getTimeInMillisecond, timeValidator } from './date.js';
 import { generateUniqId } from './generateUniqId.js';
@@ -33,7 +33,7 @@ export const recurringEventValidator = (event) => {
 
     return true;
   } else {
-    throw new Error('Invalid event');
+    throw new Error('Invalid event object');
   }
 };
 
@@ -120,7 +120,9 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
         timeDifference +
         (NUMBER_OF_WEEK_DAYS - daysOfWeekDifference) * DAY_IN_MILLISECONDS;
 
-      const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS, eventId);
+      const data = { callback, delay, WEEK_IN_MILLISECONDS, eventId };
+
+      const timerId = loop(data);
 
       timerIDs.push(timerId);
     }
@@ -128,7 +130,9 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
     if (!willBeNextWeek) {
       const delay = timeDifference - daysOfWeekDifference * DAY_IN_MILLISECONDS;
 
-      const timerId = loop(callback, delay, WEEK_IN_MILLISECONDS, eventId);
+      const data = { callback, delay, WEEK_IN_MILLISECONDS, eventId };
+
+      const timerId = loop(data);
 
       timerIDs.push(timerId);
     }
@@ -136,5 +140,3 @@ export const daysOfWeekLoop = (callback, time, daysOfweek) => {
 
   return { eventId, timerIDs };
 };
-
-window.recurringEventValidator = recurringEventValidator;
