@@ -11,16 +11,17 @@ import { DAYS_OF_WEEK, NUMBER_OF_WEEK_DAYS } from '../constants/index.js';
  * daysOfWeekСonverter(['Monday', 'Tuesday', 'Sunday'])
  **/
 export const daysOfWeekСonverter = (daysOfWeek) => {
-  const daysNumbers = [];
+  const convertedDaysOfWeek = daysOfWeek.reduce((previous, current) => {
+    const index = DAYS_OF_WEEK.findIndex((el) => el === current.toLowerCase());
 
-  daysOfWeek.forEach((day) => {
-    const index = DAYS_OF_WEEK.findIndex((el) => el === day);
     if (index !== -1) {
-      daysNumbers.push(index);
+      previous.push(index);
     }
-  });
 
-  return daysNumbers;
+    return previous;
+  }, []);
+
+  return convertedDaysOfWeek;
 };
 
 /**
@@ -66,3 +67,5 @@ export const daysOfWeekValidator = (daysOfWeek) => {
     throw new Error('Invalid array of the days of week');
   }
 };
+
+window.daysOfWeekСonverter = daysOfWeekСonverter;
