@@ -47,23 +47,29 @@ const isGreaterThanOrEqualToZero = (value) => {
  * @param {ReminderTime} reminderTime - object of the reminder time.
  * @returns {(Boolean|Error)} returns true if the object is valid, or returns an error if otherwise.
  * @example
- * //returns true
+ * //returns Error
  * reminderTimeValidator({hours: 12})
  * //returns true
- * reminderTimeValidator({minutes: 10, hours: -1})
+ * reminderTimeValidator({minutes: 10, hours: 1})
  * //returns Error
  * reminderTimeValidator({minutes: '10', hours: -1})
  */
 export const reminderTimeValidator = (reminderTime) => {
-  const { minutes, hours } = reminderTime;
+  if (!reminderTime?.minutes || !reminderTime.hours) {
+    throw new Error(
+      'Reminder time object have to contain the minutes and hours fields'
+    );
+  }
 
   if (
-    isGreaterThanOrEqualToZero(minutes) ||
-    isGreaterThanOrEqualToZero(hours)
+    isGreaterThanOrEqualToZero(reminderTime.minutes) &&
+    isGreaterThanOrEqualToZero(reminderTime.hours)
   ) {
     return true;
   } else {
-    throw new Error('Invalid reminder time');
+    throw new Error(
+      'Invalid reminder time. Hours and minutes have to be numbers greater than or equal to zero'
+    );
   }
 };
 
@@ -72,27 +78,14 @@ export const reminderTimeValidator = (reminderTime) => {
  * @param {ReminderTime} reminderTime - object of the reminder time.
  * @returns {Number} returns minutes and hours in milliseconds.
  * @example
- * //returns 3600000
- * reminderTimeValidator({hours: 1})
- * //returns 600000
- * reminderTimeValidator({minutes: 10})
  * //returns 4200000
- * reminderTimeValidator({minutes: 10, hours: 1})
+ * reminderTimeConvertor({minutes: 10, hours: 1})
  */
-export const reminderTimeConvertor = (reminderTime) => {
-  let { hours, minutes } = reminderTime;
+export const reminderTimeConvertor = ({ hours, minutes }) => {
+  const hoursInMilliseconds = hours * MINUTES_IN_HOUR * MILLISECONDS_IN_MINUTE;
+  const minutesInMilliseconds = minutes * MILLISECONDS_IN_MINUTE;
 
-  if (!hours || !isValid(hours)) {
-    hours = 0;
-  }
-
-  if (!minutes || !isValid(minutes)) {
-    minutes = 0;
-  }
-
-  const timeInMilliseconds =
-    hours * MINUTES_IN_HOUR * MILLISECONDS_IN_MINUTE +
-    minutes * MILLISECONDS_IN_MINUTE;
+  const timeInMilliseconds = hoursInMilliseconds + minutesInMilliseconds;
 
   return timeInMilliseconds;
 };
