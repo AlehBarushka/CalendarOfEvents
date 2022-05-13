@@ -26,7 +26,6 @@ export const addReminderTimeout = (date, time, reminderTime, callback) => {
   const delay = remainingTime - reminderTimeInMilliseconds;
 
   const reminderTimerId = setTimeout(callback, delay);
-  console.log(delay);
 
   return reminderTimerId;
 };
